@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+   url      = env("DATABASE_URL")
+  // The `url` datasource property is no longer supported in schema files for
+  // Prisma v7+. Move your connection URL to `prisma.config.ts` and provide
+  // an `adapter` (for direct DB connections) or `accelerateUrl` (for
+  // Accelerate) to the PrismaClient constructor. See:
+  // https://pris.ly/d/config-datasource
+}
+
+//////////////////////////////////////////////////////
+// USER
+//////////////////////////////////////////////////////
+
+model User {
+  // Primary Key
+  id String @id @default(cuid())
+
+  // Authentication
+  email         String    @unique
+  password      String?   // Null for OAuth users
+  emailVerified DateTime?
+  image         String?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  profile  Profile?
+  accounts Account[]
+  sessions Session[]
+}
+
+//////////////////////////////////////////////////////
+// PROFILE
+//////////////////////////////////////////////////////
+
+model Profile {
+  id String @id @default(cuid())
+
+  // One-to-One with User
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Personal Information
+  fullName String?
+  phone    String?
+
+  // Education
+  college        String?
+  degree         String?
+  graduationYear Int?
+
+  // Links
+  github   String?
+  linkedin String?
+  portfolio String?
+
+  // About User
+  bio String?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//////////////////////////////////////////////////////
+// ACCOUNT
+// Used by Auth.js for Google/GitHub OAuth
+//////////////////////////////////////////////////////
+
+model Account {
+  id String @id @default(cuid())
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type               String
+  provider           String
+  providerAccountId  String
+
+  refresh_token String? @db.Text
+  access_token  String? @db.Text
+
+  expires_at Int?
+
+  token_type String?
+  scope      String?
+
+  id_token String? @db.Text
+
+  session_state String?
+
+  @@unique([provider, providerAccountId])
+}
+
+//////////////////////////////////////////////////////
+// SESSION
+//////////////////////////////////////////////////////
+
+model Session {
+  id String @id @default(cuid())
+
+  sessionToken String @unique
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  expires DateTime
+}
+
+//////////////////////////////////////////////////////
+// VERIFICATION TOKEN
+//////////////////////////////////////////////////////
+
+model VerificationToken {
+  identifier String
+
+  token String @unique
+
+  expires DateTime
+
+  @@unique([identifier, token])
+}
