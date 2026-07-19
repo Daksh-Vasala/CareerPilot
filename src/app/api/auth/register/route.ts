@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const validateData = registerSchema.parse(body);
 
-    const { email, password } = validateData;
+    const { fullName, email, password } = validateData;
 
     const existingUser = await prisma.user.findUnique({
       where: {
@@ -36,7 +36,9 @@ export async function POST(req: NextRequest) {
         email,
         password: hashedPassword,
         profile: {
-          create: {},
+          create: {
+            fullName
+          },
         },
       },
     });
