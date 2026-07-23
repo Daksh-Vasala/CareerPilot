@@ -9,33 +9,45 @@ export async function GET() {
   if (!session?.user?.id) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
-  
+
   const profile = await getProfile(session.user.id);
-  
-  return NextResponse.json(profile);
+
+  return NextResponse.json({ email: session.user.email, profile });
 }
 
-export async function PATCH(req: NextRequest){
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
+export async function PATCH(req: NextRequest) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
-  const body = await req.json();
-  const result = profileSchema.safeParse(body);
+    const body = await req.json();
+    const result = profileSchema.safeParse(body);
 
-  if (!result.success) {
+    if (!result.success) {
+      return NextResponse.json(
+        {
+          message: "Validation failed",
+          errors: result.error.issues,
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    const updatedProfile = await editProfile(session.user.id, result.data);
+    return NextResponse.json(updatedProfile);
+  } catch (error) {
+    console.log(error);
     return NextResponse.json(
       {
-        message: "Validation failed",
-        errors: result.error.issues,
+        message: "Internal Server error",
       },
       {
-        status: 400,
-      }
+        status: 500,
+      },
     );
   }
-  
-  const updatedProfile = await editProfile(session.user.id, result.data);
-  return NextResponse.json(updatedProfile);
 }

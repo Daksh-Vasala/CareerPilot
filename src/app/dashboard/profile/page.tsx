@@ -5,13 +5,15 @@ import {
   User,
   GraduationCap,
   Link2,
-
-  AlertCircle,
   Calendar,
   ChevronDown,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import ProfileField from "@/components/ProfileField";
+import { toast } from "sonner";
 
 type ProfileForm = {
+  email: string;
   fullName: string;
   phone: string;
   bio: string;
@@ -32,24 +34,72 @@ export default function ProfilePage() {
     formState: { isDirty },
   } = useForm<ProfileForm>({
     defaultValues: {
-      fullName: "Alex Rivera",
-      phone: "+1 (555) 012-3456",
-      bio: "Aspiring Software Engineer specializing in Machine Learning and Backend Architecture. Passionate about building scalable systems and AI-driven career development tools.",
-      college: "Stanford University",
-      degree: "MS in Computer Science",
-      graduationYear: "2024",
-      linkedin: "arivera-dev",
-      github: "arivera-stanford",
-      portfolio: "https://arivera.design",
+      email: "",
+      fullName: "",
+      phone: "",
+      bio: "",
+      college: "",
+      degree: "",
+      graduationYear: "",
+      linkedin: "",
+      github: "",
+      portfolio: "",
     },
   });
 
+  const [initialProfile, setInitialProfile] = useState<ProfileForm | null>(null);
   // eslint-disable-next-line react-hooks/incompatible-library
+  const profile = watch();
   const bio = watch("bio") || "";
 
-  const onSubmit = (data: ProfileForm) => {
+  const onSubmit = async (data: ProfileForm) => {
+    try {
+      await fetch("/api/profile", {
+        method: "PATCH",
+        headers:{
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      console.log("Error in updating profile: ", error)
+      toast.error("Profile failed to update");
+    }
     console.log("Saved:", data);
   };
+
+  
+
+  useEffect(() => {
+    async function getProfile() {
+      const res = await fetch("/api/profile", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await res.json();
+      const profile = {
+        email: result.email ?? "",
+        fullName: result.profile.fullName ?? "",
+        phone: result.profile.phone ?? "",
+        bio: result.profile.bio ?? "",
+        college: result.profile.college ?? "",
+        degree: result.profile.degree ?? "",
+        graduationYear: result.profile.graduationYear?.toString() ?? "",
+        linkedin: result.profile.linkedin ?? "",
+        github: result.profile.github ?? "",
+        portfolio: result.profile.portfolio ?? "",
+      }
+      console.log(profile);
+      setInitialProfile(profile)
+      reset(profile);
+    }
+
+    getProfile();
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -75,8 +125,8 @@ export default function ProfilePage() {
                   className="h-full w-full object-cover"
                 />
               </div>
-              <h2 className="mt-4 text-lg font-semibold">Alex Rivera</h2>
-              <p className="text-sm text-slate-500">alex.rivera@stanford.edu</p>
+              <h2 className="mt-4 text-lg font-semibold">{initialProfile?.fullName}</h2>
+              <p className="text-sm text-slate-500">{initialProfile?.email}</p>
 
               <div className="mt-5 w-full">
                 <div className="mb-1 flex items-center justify-between text-xs">
@@ -97,15 +147,15 @@ export default function ProfilePage() {
             <ul className="space-y-3 text-sm text-slate-600">
               <li className="flex items-center gap-3">
                 <GraduationCap className="h-4 w-4 text-slate-400" />
-                Stanford University
+                <ProfileField label="College" value={initialProfile?.college} />
               </li>
               <li className="flex items-center gap-3">
                 <User className="h-4 w-4 text-slate-400" />
-                MS in Computer Science
+                <ProfileField label="Degree" value={initialProfile?.degree} />
               </li>
               <li className="flex items-center gap-3">
                 <Calendar className="h-4 w-4 text-slate-400" />
-                Class of 2024
+                <ProfileField label="Degree" value={initialProfile?.graduationYear} />
               </li>
             </ul>
           </aside>
@@ -116,22 +166,21 @@ export default function ProfilePage() {
             <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
               <div className="mb-5 flex items-center gap-2">
                 <User className="h-5 w-5 text-indigo-600" />
-                <h3 className="text-base font-semibold">Personal Information</h3>
+                <h3 className="text-base font-semibold">
+                  Personal Information
+                </h3>
               </div>
               <div className="h-px bg-slate-100" />
 
               <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
                 <Field label="Full Name">
-                  <input
-                    {...register("fullName")}
-                    className="input"
-                  />
+                  <input {...register("fullName")} className="input" />
                 </Field>
                 <Field label="Phone Number">
                   <input {...register("phone")} className="input" />
                   <p className="mt-1 flex items-center gap-1 text-xs text-red-500">
-                    <AlertCircle className="h-3 w-3" />
-                    Verification required
+                    {/* <AlertCircle className="h-3 w-3" />
+                    Verification required */}
                   </p>
                 </Field>
               </div>
@@ -145,7 +194,8 @@ export default function ProfilePage() {
                     className="input resize-none"
                   />
                   <p className="mt-1 text-xs text-slate-400">
-                    Brief description for your profile. {bio.length}/500 characters
+                    Brief description for your profile. {bio.length}/500
+                    characters
                   </p>
                 </Field>
               </div>
@@ -196,7 +246,9 @@ export default function ProfilePage() {
               <div className="mt-5 space-y-5">
                 <Field label="LinkedIn Profile">
                   <div className="input flex items-center gap-1 p-0">
-                    <span className="pl-3 text-sm text-slate-400">linkedin.com/in/</span>
+                    <span className="pl-3 text-sm text-slate-400">
+                      linkedin.com/in/
+                    </span>
                     <input
                       {...register("linkedin")}
                       className="w-full bg-transparent py-2 pr-3 text-sm outline-none"
@@ -205,7 +257,9 @@ export default function ProfilePage() {
                 </Field>
                 <Field label="GitHub Profile">
                   <div className="input flex items-center gap-1 p-0">
-                    <span className="pl-3 text-sm text-slate-400">github.com/</span>
+                    <span className="pl-3 text-sm text-slate-400">
+                      github.com/
+                    </span>
                     <input
                       {...register("github")}
                       className="w-full bg-transparent py-2 pr-3 text-sm outline-none"
@@ -224,33 +278,31 @@ export default function ProfilePage() {
           </div>
 
           {/* Sticky footer */}
-          <div className="fixed bottom-0 right-0 z-20 border-t border-slate-200 bg-white/90 backdrop-blur lg:col-span-2">
-            <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => reset()}
-                  className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
-                >
-                  Reset
-                </button>
-                <button
-                  type="button"
-                  onClick={() => reset()}
-                  className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={!isDirty}
-                  className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 disabled:opacity-70"
-                >
-                  Save Changes
-                </button>
+          {isDirty && (
+            <div className="fixed bottom-0 right-0 z-20 border-t border-slate-200 bg-white/90 backdrop-blur lg:col-span-2">
+              <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+                <p className="text-sm text-slate-600">
+                  You have unsaved changes.
+                </p>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => reset()}
+                    className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={!isDirty}
+                    className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 disabled:opacity-70"
+                  >
+                    Save Changes
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </form>
       </main>
 
