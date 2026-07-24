@@ -1,3 +1,7 @@
+import { auth } from "@/auth";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+
 // types
 export type Task = { id: number; label: string; done: boolean };
 export type App = {
@@ -7,9 +11,26 @@ export type App = {
   date: string;
   logo: string;
 };
-export type Interview = { company: string; role: string; time: string; date: string };
-export type Stats = { applications: number; resumeScore: number; interviews: number; roadmapProgress: number };
-export type Resume = { fileName: string; fileUrl: string; fileSize: number; createdAt: Date };
+export type Interview = {
+  company: string;
+  role: string;
+  time: string;
+  date: string;
+};
+export type Stats = {
+  applications: number;
+  resumeScore: number;
+  interviews: number;
+  roadmapProgress: number;
+};
+export type Resume = {
+  fileName: string;
+  fileUrl: string;
+  fileSize: number;
+  createdAt: Date;
+  updatedAt: Date;
+  
+};
 
 // Mock data
 const MOCK_APPS: App[] = [
@@ -46,13 +67,6 @@ export async function getStats(): Promise<Stats> {
   };
 }
 
-export async function getResume(): Promise<Resume | null> {
-  await new Promise((resolve) => setTimeout(resolve, 100));
-  // return null to simulate no resume uploaded yet
-  return null;
-  // or return a mock resume:
-  // return { fileName: 'resume.pdf', fileUrl: '/resume.pdf', fileSize: 245760, createdAt: new Date() };
-}
 
 export async function getTasks(): Promise<Task[]> {
   await new Promise((resolve) => setTimeout(resolve, 100));

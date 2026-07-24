@@ -32,3 +32,29 @@ export async function deleteResume(publicId: string) {
     resource_type: "raw",
   });
 }
+
+export async function updloadProfileImage(
+  buffer: Buffer,
+): Promise<UploadApiResponse> {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: "career-pilot/profile-images",
+        resource_type: "image",
+      },
+      (error, result) => {
+        if (error) return reject(error);
+
+        resolve(result!);
+      },
+    );
+
+    stream.end(buffer);
+  });
+}
+
+export async function deleteProfileImage(publicId: string) {
+  return cloudinary.uploader.destroy(publicId, {
+    resource_type: "image",
+  });
+}

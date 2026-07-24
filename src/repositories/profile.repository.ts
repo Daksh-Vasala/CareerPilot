@@ -6,7 +6,15 @@ export function getProfileByUserId(userId: string) {
     where: {
       userId,
     },
+    include: {
+      user: {
+        select: {
+          email: true
+        }
+      }
+    }
   });
+  
 }
 
 export async function updateProfile(

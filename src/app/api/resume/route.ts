@@ -48,27 +48,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
-export async function GET() {
-  try {
-    const session = await auth();
-
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
-    const resume = await getResume(session.user.id);
-
-    return NextResponse.json(resume);
-  } catch (error) {
-    console.error(error);
-
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}

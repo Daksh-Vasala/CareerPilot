@@ -1,7 +1,10 @@
 "use client";
 
+import { getProfile } from "@/services/profile.service";
 import { Bell, Search, Menu } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+
 
 export default function Topbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);

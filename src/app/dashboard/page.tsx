@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import ActionButtons from "@/components/ActionButtons";
 import DashboardStats from "@/components/DashboardStats";
 import InsightCard from "@/components/InsightCard";
@@ -8,24 +9,26 @@ import TasksCard from "@/components/TasksCard";
 import UpcomingInterviews from "@/components/UpcomingInterviews";
 import {
   getStats,
-  getResume,
   getTasks,
   getRecentApplications,
   getUpcomingInterviews,
   getProfileCompletion,
 } from "@/services/client/dashboard.service";
+import { getResume } from "@/services/resume.service";
 import { Sparkles, Users } from "lucide-react";
 
 export default async function DashboardPage() {
   // Fetch all data in parallel
-  const [stats, resume, tasks, apps, interviews, profilePct] = await Promise.all([
+  const [stats, tasks, apps, interviews, profilePct] = await Promise.all([
     getStats(),
-    getResume(),
     getTasks(),
     getRecentApplications(),
     getUpcomingInterviews(),
     getProfileCompletion(),
   ]);
+
+  const session = await auth();
+  const resume = await getResume(session?.user.id || "");
 
   return (
     <div className="space-y-6">
