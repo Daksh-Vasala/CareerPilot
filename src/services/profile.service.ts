@@ -22,10 +22,29 @@ export interface ProfileFormData {
   createdAt: Date;
   updatedAt: Date;
 }
-export async function getProfile(userId: string):Promise<ProfileFormData | null> {
-  const profile = await getProfileByUserId(userId);
 
-  if (!profile) return null
+export async function getProfile(
+  userId: string,
+): Promise<ProfileFormData> {
+  const profile = await getProfileByUserId(userId);
+  const emptyProfile: ProfileFormData = {
+    id: "",
+    userId: "",
+    email: "",
+    fullName: "",
+    phone: "",
+    bio: "",
+    college: "",
+    degree: "",
+    graduationYear: new Date().getFullYear(),
+    linkedin: "",
+    github: "",
+    portfolio: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  if (!profile) return emptyProfile;
 
   return {
     id: profile.id,
@@ -49,11 +68,6 @@ export async function getProfile(userId: string):Promise<ProfileFormData | null>
 }
 
 export async function editProfile(userId: string, data: ProfileInput) {
-  const profile = await getProfileByUserId(userId);
-  if (!profile) {
-    throw new Error("Profile not found");
-  }
-
   return updateProfile(userId, data);
 }
 
