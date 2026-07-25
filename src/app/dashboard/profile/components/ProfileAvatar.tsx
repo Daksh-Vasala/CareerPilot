@@ -80,6 +80,7 @@ const ProfileAvatar = ({ image, fullName }: ProfileAvatarProps) => {
             <Image
               src={preview}
               alt={fullName}
+              loading="eager"
               width={96}
               height={96}
               className="h-full w-full object-cover"
