@@ -9,7 +9,8 @@ export function getProfileByUserId(userId: string) {
     include: {
       user: {
         select: {
-          email: true
+          email: true,
+          image: true
         }
       }
     }

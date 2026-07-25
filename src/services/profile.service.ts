@@ -10,6 +10,7 @@ export interface ProfileFormData {
   id: string;
   userId: string;
   email: string;
+  image: string;
   fullName: string;
   phone: string;
   bio: string;
@@ -31,6 +32,7 @@ export async function getProfile(
     id: "",
     userId: "",
     email: "",
+    image: "",
     fullName: "",
     phone: "",
     bio: "",
@@ -45,11 +47,12 @@ export async function getProfile(
   };
 
   if (!profile) return emptyProfile;
-
+  
   return {
     id: profile.id,
     userId: profile.userId,
     email: profile.user.email,
+    image: profile.user.image ?? "",
 
     fullName: profile.fullName ?? "",
     phone: profile.phone ?? "",

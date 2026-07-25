@@ -2,6 +2,7 @@ export type ProfileFormData = {
   id: string;
   userId: string;
   email: string;
+  image: string;
   fullName: string;
   phone: string;
   bio: string;
