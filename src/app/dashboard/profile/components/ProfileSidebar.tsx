@@ -8,7 +8,6 @@ const ProfileSidebar = ({
 }: {
   initialProfile: ProfileFormData;
 }) => {
-  console.log(initialProfile)
   return (
     <aside className="h-fit rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="flex flex-col items-center text-center">

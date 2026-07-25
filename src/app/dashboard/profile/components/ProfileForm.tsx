@@ -61,7 +61,6 @@ export default function ProfileForm({
       console.log("Error in updating profile: ", error);
       toast.error("Profile failed to update");
     }
-    console.log("Saved:", data);
   };
 
   return (

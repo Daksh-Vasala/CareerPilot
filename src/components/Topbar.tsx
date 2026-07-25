@@ -1,12 +1,15 @@
 "use client";
-
-import { getProfile } from "@/services/profile.service";
 import { Bell, Search, Menu } from "lucide-react";
-import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
+type Profile = {
+  image: string | null;
+  fullName: string;
+};
 
-
-export default function Topbar() {
+export default function Topbar({ image, fullName }: Profile) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
@@ -31,7 +34,9 @@ export default function Topbar() {
       </div>
 
       {/* Search - Mobile (toggleable) */}
-      <div className={`flex-1 transition-all duration-300 md:hidden ${isSearchOpen ? 'max-w-full' : 'max-w-0 overflow-hidden'}`}>
+      <div
+        className={`flex-1 transition-all duration-300 md:hidden ${isSearchOpen ? "max-w-full" : "max-w-0 overflow-hidden"}`}
+      >
         <div className="relative w-full">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
@@ -44,7 +49,9 @@ export default function Topbar() {
       </div>
 
       {/* Right side */}
-      <div className={`flex items-center gap-2 sm:gap-5 ${isSearchOpen ? 'ml-2' : 'ml-auto'}`}>
+      <div
+        className={`flex items-center gap-2 sm:gap-5 ${isSearchOpen ? "ml-2" : "ml-auto"}`}
+      >
         {/* Mobile search toggle */}
         <button
           onClick={() => setIsSearchOpen(!isSearchOpen)}
@@ -61,19 +68,22 @@ export default function Topbar() {
 
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="hidden text-right sm:block">
-            <p className="text-sm font-semibold text-slate-800">
-              Alex Rivera
-            </p>
-            <p className="text-xs text-slate-500">
-              Free Plan
-            </p>
+            <p className="text-sm font-semibold text-slate-800">{fullName}</p>
+            <p className="text-xs text-slate-500">Free Plan</p>
           </div>
-
-          <img
-            src="https://i.pravatar.cc/80?img=12"
-            alt="Avatar"
-            className="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover ring-2 ring-slate-100 transition hover:ring-indigo-200"
-          />
+          <Link href="/dashboard/profile">
+            {image ? (
+              <Image
+                src={image}
+                alt={`${fullName} avatar`}
+                className="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover ring-2 ring-slate-100 transition hover:ring-indigo-200"
+                width={40}
+                height={40}
+              />
+            ) : (
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-slate-200 ring-2 ring-slate-100" />
+            )}
+          </Link>
         </div>
       </div>
     </header>

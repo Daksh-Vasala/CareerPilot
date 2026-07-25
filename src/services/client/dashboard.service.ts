@@ -1,7 +1,3 @@
-import { auth } from "@/auth";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
-
 // types
 export type Task = { id: number; label: string; done: boolean };
 export type App = {

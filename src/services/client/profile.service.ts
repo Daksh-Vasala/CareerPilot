@@ -31,6 +31,9 @@ export async function getProfile(): Promise<ProfileFormData> {
 
   // Map API response to the form shape (same as original)
   return {
+    id: result.id ?? "",
+    userId: result.userId ?? "",
+    image: result.image ?? "",
     email: result.email ?? "",
     fullName: result.profile.fullName ?? "",
     phone: result.profile.phone ?? "",
@@ -41,6 +44,9 @@ export async function getProfile(): Promise<ProfileFormData> {
     linkedin: result.profile.linkedin ?? "",
     github: result.profile.github ?? "",
     portfolio: result.profile.portfolio ?? "",
+    
+  createdAt: result.profile.createdAt ?? "",
+  updatedAt: result.profile.updatedAt ?? "",
   };
 }
 

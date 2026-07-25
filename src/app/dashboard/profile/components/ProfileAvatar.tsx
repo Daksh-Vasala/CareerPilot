@@ -48,7 +48,6 @@ const ProfileAvatar = ({ image, fullName }: ProfileAvatarProps) => {
 
       setPreview(data.image);
 
-      console.log(file);
       toast.success("Image selected");
     } catch (error) {
       console.error(error);
