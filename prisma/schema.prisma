@@ -165,25 +165,28 @@ model Resume {
 //////////////////////////////////////////////////////
 
 model ResumeAnalysis {
-  id        String   @id @default(cuid())
+  id                String   @id @default(cuid())
 
-  resumeId  String   @unique
-  resume    Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  resumeId          String   @unique
+  resume            Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
 
-  atsScore Int
+  atsScore          Int
 
-  summary String @db.Text
+  summary           String   @db.Text
+  overallFeedback   String   @db.Text
 
-  strengths Json
-  weaknesses Json
+  strengths         Json
+  weaknesses        Json
 
-  technicalSkills Json
-  softSkills Json
+  technicalSkills   Json
+  softSkills        Json
 
-  missingSkills Json
+  missingSkills     Json
 
-  suggestions Json
+  suggestions       Json
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  analyzedAt        DateTime @default(now())
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }

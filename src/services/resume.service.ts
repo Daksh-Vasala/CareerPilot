@@ -7,6 +7,8 @@ import {
 
 import pdfParse from "pdf-parse-fixed";
 
+import { analyzeResume } from "@/services/resume-analysis.service";
+
 export async function saveResume(userId: string, file: File) {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
@@ -17,10 +19,21 @@ export async function saveResume(userId: string, file: File) {
 
   const existingResume = await getResumeByUserId(userId);
 
+  let resume;
+
   if (existingResume) {
     await deleteResume(existingResume.publicId);
 
-    return updateResume(userId, {
+    resume = await updateResume(userId, {
+      fileName: file.name,
+      fileUrl: uploaded.secure_url,
+      publicId: uploaded.public_id,
+      extractedText,
+      fileSize: uploaded.bytes,
+    });
+  } else {
+    resume = await createResume({
+      userId,
       fileName: file.name,
       fileUrl: uploaded.secure_url,
       publicId: uploaded.public_id,
@@ -29,16 +42,14 @@ export async function saveResume(userId: string, file: File) {
     });
   }
 
-  return createResume({
-    userId,
-    fileName: file.name,
-    fileUrl: uploaded.secure_url,
-    publicId: uploaded.public_id,
-    extractedText,
-    fileSize: uploaded.bytes,
-  });
-}
+  try {
+    await analyzeResume(resume.id);
+  } catch (error) {
+    console.error("Resume analysis failed:", error);
+  }
 
+  return resume;
+}
 export async function getResume(userId: string) {
   return getResumeByUserId(userId);
 }
