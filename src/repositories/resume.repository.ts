@@ -13,6 +13,7 @@ export function createResume(data: {
   fileName: string;
   fileUrl: string;
   publicId: string;
+  extractedText: string;
   fileSize: number;
 }) {
   return prisma.resume.create({
@@ -26,6 +27,7 @@ export function updateResume(
     fileName: string;
     fileUrl: string;
     publicId: string;
+    extractedText: string;
     fileSize: number;
   },
 ) {

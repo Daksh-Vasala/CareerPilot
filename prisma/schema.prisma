@@ -10,6 +10,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+
   // The `url` datasource property is no longer supported in schema files for
   // Prisma v7+. Move your connection URL to `prisma.config.ts` and provide
   // an `adapter` (for direct DB connections) or `accelerateUrl` (for
@@ -148,7 +150,39 @@ model Resume {
   fileUrl String
   publicId String
 
+  extractedText String @db.Text @default("")
+
   fileSize Int
+
+  analysis  ResumeAnalysis?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//////////////////////////////////////////////////////
+// RESUME ANALYSIS
+//////////////////////////////////////////////////////
+
+model ResumeAnalysis {
+  id        String   @id @default(cuid())
+
+  resumeId  String   @unique
+  resume    Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  atsScore Int
+
+  summary String @db.Text
+
+  strengths Json
+  weaknesses Json
+
+  technicalSkills Json
+  softSkills Json
+
+  missingSkills Json
+
+  suggestions Json
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
