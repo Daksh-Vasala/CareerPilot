@@ -1,5 +1,6 @@
+import { categorizeSkills, getDashOffset, getScoreLabel } from "@/app/dashboard/resume-analyzer/utils/helpers";
 import { generateResumeAnalysis } from "@/lib/ai/resume-analysis";
-import { getResumeById } from "@/repositories/resume.repository";
+import { getResumeById, getResumeByUserId } from "@/repositories/resume.repository";
 import {
   createResumeAnalysis,
   getResumeAnalysisByResumeId,
@@ -56,4 +57,37 @@ export async function analyzeResume(resumeId: string) {
       },
     },
   });
+}
+
+export async function getResumeAnalysis(userId: string) {
+  const resume = await getResumeByUserId(userId);
+
+  if (!resume) {
+    return null;
+  }
+
+  const analysis = await getResumeAnalysisByResumeId(resume.id);
+
+  if (!analysis) {
+    return null;
+  }
+
+  const { frontend, backend, tools } = categorizeSkills(
+    analysis.technicalSkills as string[]
+  );
+
+  return {
+    ...analysis,
+
+    fileName: resume.fileName,
+    fileUrl: resume.fileUrl,
+    fileSize: resume.fileSize,
+
+    scoreLabel: getScoreLabel(analysis.atsScore),
+    dashOffset: getDashOffset(analysis.atsScore),
+
+    frontend,
+    backend,
+    tools,
+  };
 }

@@ -11,7 +11,7 @@ export default async function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      <main className="mx-auto max-w-6xl px-6 py-8 pb-28">
+      <main className="mx-auto max-w-8xl ">
         <div className="mb-8">
           <h1 className="text-2xl font-bold">Profile</h1>
           <p className="mt-1 text-sm text-slate-500">
