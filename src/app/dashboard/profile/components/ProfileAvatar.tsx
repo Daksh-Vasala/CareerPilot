@@ -1,3 +1,4 @@
+import getInitials from "@/lib/utils/getInitials";
 import { Camera, Pencil } from "lucide-react";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
@@ -114,15 +115,6 @@ const ProfileAvatar = ({ image, fullName }: ProfileAvatarProps) => {
   );
 };
 
-function getInitials(name: string) {
-  if (!name) return "?";
 
-  return name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-}
 
 export default ProfileAvatar;

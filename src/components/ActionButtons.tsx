@@ -2,7 +2,7 @@ import { FileText, Plus, Rocket } from "lucide-react";
 
 function ActionBtn({ children, icon, primary }: any) {
   const base =
-    "inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all";
+    "inline-flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all sm:w-auto";
   const style = primary
     ? "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm hover:shadow"
     : "bg-gray-100 text-gray-700 hover:bg-gray-200";
@@ -15,12 +15,16 @@ function ActionBtn({ children, icon, primary }: any) {
 
 export default function ActionButtons() {
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
       <ActionBtn icon={<FileText className="w-4 h-4" />} primary>
         Analyze Resume
       </ActionBtn>
-      <ActionBtn icon={<Plus className="w-4 h-4" />}>Add Job Application</ActionBtn>
-      <ActionBtn icon={<Rocket className="w-4 h-4" />}>Generate AI Roadmap</ActionBtn>
+      <ActionBtn icon={<Plus className="w-4 h-4" />}>
+        Add Job Application
+      </ActionBtn>
+      <ActionBtn icon={<Rocket className="w-4 h-4" />}>
+        Generate AI Roadmap
+      </ActionBtn>
     </div>
   );
 }

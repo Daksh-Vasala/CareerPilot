@@ -26,7 +26,7 @@ export default function TasksCard({ initialTasks }: { initialTasks: Task[] }) {
   // };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200/80 p-5 shadow-sm">
+    <div className="bg-white rounded-xl border border-gray-200/80 p-4 sm:p-5 shadow-sm">
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-medium text-gray-900">Today&apos;s Tasks</h3>
         <span className="text-xs font-medium text-indigo-600">

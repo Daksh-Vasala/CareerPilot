@@ -33,7 +33,7 @@ export default async function ResumeAnalyzerPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-900 p-6 md:p-10 max-w-8xl mx-auto space-y-8 font-sans">
+    <main className="min-h-screen bg-gray-50 text-gray-900 px-4 py-6 sm:px-6 md:px-10 max-w-8xl mx-auto space-y-8 font-sans">
       <ResumeHeader
         fileName={resume?.fileName || ""}
         fileUrl={resume?.fileUrl || ""}

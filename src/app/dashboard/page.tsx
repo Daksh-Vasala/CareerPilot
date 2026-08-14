@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import ActionButtons from "@/components/ActionButtons";
 import DashboardStats from "@/components/DashboardStats";
 import InsightCard from "@/components/InsightCard";
-import  ProfileCompletion  from "@/components/ProfileCompletion";
+import ProfileCompletion from "@/components/ProfileCompletion";
 import RecentApplications from "@/components/RecentApplications";
 import ResumeCard from "@/components/ResumeCard";
 import TasksCard from "@/components/TasksCard";
@@ -31,7 +31,7 @@ export default async function DashboardPage() {
   const resume = await getResume(session?.user.id || "");
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-8xl space-y-6 px-4 py-4 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>

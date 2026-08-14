@@ -20,7 +20,7 @@ import { Clock, Calendar, CheckCircle2 } from "lucide-react";
 
 export default function RecentApplications({ apps }: { apps: App[] }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200/80 p-5 shadow-sm">
+    <div className="bg-white rounded-xl border border-gray-200/80 p-4 sm:p-5 shadow-sm">
       <h3 className="font-medium text-gray-900 mb-3">Recent Applications</h3>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">

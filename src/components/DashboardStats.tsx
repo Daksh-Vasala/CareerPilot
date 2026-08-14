@@ -58,7 +58,7 @@ export default function DashboardStats({ stats }: { stats: Stats }) {
       {statData.map((s, i) => (
         <div
           key={i}
-          className="bg-white rounded-xl border border-gray-200/80 p-5 shadow-sm hover:shadow-md transition-shadow"
+          className="bg-white rounded-xl border border-gray-200/80 p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow"
         >
           <div className="flex items-start justify-between">
             <div className={`${s.bg} p-2.5 rounded-lg`}>{s.icon}</div>

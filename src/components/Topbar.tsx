@@ -1,4 +1,5 @@
 "use client";
+import getInitials from "@/lib/utils/getInitials";
 import { Bell, Search, Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,10 +14,10 @@ export default function Topbar({ image, fullName }: Profile) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6">
+    <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-slate-200 bg-white px-3 sm:px-6">
       {/* Left side - Mobile menu trigger (optional, for future use) */}
       <div className="flex items-center gap-3 lg:hidden">
-        <button className="rounded-lg p-2 transition hover:bg-slate-100 lg:hidden">
+        <button className="rounded-lg p-1.5 transition hover:bg-slate-100 lg:hidden">
           <Menu className="h-5 w-5 text-slate-600" />
         </button>
       </div>
@@ -81,7 +82,9 @@ export default function Topbar({ image, fullName }: Profile) {
                 height={40}
               />
             ) : (
-              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-slate-200 ring-2 ring-slate-100" />
+              <div className="flex h-full w-full rounded-full p-2 items-center justify-center bg-indigo-100 text-2xl font-semibold text-indigo-700">
+                <span className="text-sm">{getInitials(fullName)}</span>
+              </div>
             )}
           </Link>
         </div>

@@ -147,7 +147,7 @@ export default function Sidebar() {
       {/* Mobile Hamburger Button */}
       <button
         onClick={toggleMobileMenu}
-        className="fixed top-4 left-4 z-50 rounded-lg bg-white p-2 shadow-lg transition-all duration-200 hover:bg-slate-50 lg:hidden"
+        className="fixed top-3 left-3 z-50 rounded-lg bg-white p-1.5 shadow-lg transition-all duration-200 hover:bg-slate-50 lg:hidden"
         aria-label="Toggle menu"
       >
         {isMobileMenuOpen ? (
@@ -166,15 +166,15 @@ export default function Sidebar() {
       {/* Mobile Overlay */}
       {isMobileMenuOpen && (
         <div
-        className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 lg:hidden"
-        onClick={closeMobileMenu}
+          className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 lg:hidden"
+          onClick={closeMobileMenu}
         />
       )}
 
       {/* Mobile Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 z-40 min-h-screen w-64 flex-col border-r border-slate-200 bg-white transition-transform duration-300 ease-in-out lg:hidden
+          fixed top-0 left-0 z-40 min-h-screen w-56 flex-col border-r border-slate-200 bg-white transition-transform duration-300 ease-in-out lg:hidden
           ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
