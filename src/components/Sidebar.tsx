@@ -78,7 +78,7 @@ export default function Sidebar() {
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto px-3">
-        <ul className="space-y-1">
+        <ul className="flex flex-col gap-1 mt-4">
           {navItems.map(({ label, href, icon: Icon }) => {
             const active =
               href === "/dashboard"
@@ -90,22 +90,34 @@ export default function Sidebar() {
                 <Link
                   href={href}
                   onClick={closeMobileMenu}
-                  className={`relative flex items-center gap-4 rounded-xl px-4 py-3 text-[15px] transition-all duration-200 ${
-                    active
-                      ? "bg-[#F5F3FF] font-semibold text-[#5B4BFF]"
-                      : "font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-                  }`}
+                  className={`
+            flex items-center gap-3 px-3 py-2.5 rounded-lg
+            transition-colors
+            font-label-md text-label-md
+            ${
+              active
+                ? `
+                  bg-[#F5F3FF] 
+                  text-[#5B4BFF] dark:text-primary-fixed
+                  font-semibold
+                  border-r-2 border-primary dark:border-primary-fixed
+                  bg-surface-container/50
+                `
+                : `
+                  font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-700
+                `
+            }
+          `}
                 >
                   <Icon
-                    className={`h-5 w-5 ${
-                      active ? "text-[#5B4BFF]" : "text-slate-500"
+                    className={`text-lg ${
+                      active
+                        ? "text-primary dark:text-primary-fixed"
+                        : "text-on-surface-variant dark:text-surface-variant"
                     }`}
+                    style={active ? { fontVariationSettings: "'FILL' 1" } : {}}
                   />
                   <span>{label}</span>
-
-                  {active && (
-                    <span className="absolute right-0 top-2 bottom-2 w-1 rounded-l-full bg-[#5B4BFF]" />
-                  )}
                 </Link>
               </li>
             );

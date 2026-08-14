@@ -41,6 +41,7 @@ model User {
   // Relations
   profile  Profile?
   resume Resume?
+  jobApplications JobApplication[]
   accounts Account[]
   sessions Session[]
 }
@@ -189,4 +190,41 @@ model ResumeAnalysis {
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+}
+
+model JobApplication {
+  id              String   @id @default(cuid())
+  userId          String
+
+  companyName     String
+  jobTitle        String
+  jobUrl          String?
+  location        String?
+  jobType         String?
+  salary          String?
+
+  status          ApplicationStatus @default(APPLIED)
+
+  appliedAt       DateTime @default(now())
+  notes           String?  @db.Text
+
+  recruiterName   String?
+  recruiterEmail  String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, status])
+  @@index([userId, appliedAt])
+}
+
+enum ApplicationStatus {
+  APPLIED
+  INTERVIEW
+  REJECTED
+  OFFER
+  WITHDRAWN
 }
