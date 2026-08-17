@@ -1,9 +1,8 @@
 "use client";
 import getInitials from "@/lib/utils/getInitials";
-import { Bell, Search, Menu } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 type Profile = {
   image: string | null;
@@ -11,7 +10,7 @@ type Profile = {
 };
 
 export default function Topbar({ image, fullName }: Profile) {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  // const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-slate-200 bg-white px-3 sm:px-6">
@@ -23,7 +22,7 @@ export default function Topbar({ image, fullName }: Profile) {
       </div>
 
       {/* Search - Desktop */}
-      <div className="hidden flex-1 max-w-md md:block">
+      {/* <div className="hidden flex-1 max-w-md md:block">
         <div className="relative w-full">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
@@ -32,9 +31,9 @@ export default function Topbar({ image, fullName }: Profile) {
             className="w-full rounded-full border border-slate-200 bg-slate-50 py-2 pl-10 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:bg-white"
           />
         </div>
-      </div>
+      </div> */}
 
-      {/* Search - Mobile (toggleable) */}
+      {/* Search - Mobile (toggleable)
       <div
         className={`flex-1 transition-all duration-300 md:hidden ${isSearchOpen ? "max-w-full" : "max-w-0 overflow-hidden"}`}
       >
@@ -47,20 +46,20 @@ export default function Topbar({ image, fullName }: Profile) {
             autoFocus={isSearchOpen}
           />
         </div>
-      </div>
+      </div> */}
 
       {/* Right side */}
       <div
-        className={`flex items-center gap-2 sm:gap-5 ${isSearchOpen ? "ml-2" : "ml-auto"}`}
+        className={`flex items-center gap-2 sm:gap-5 ml-auto`}
       >
-        {/* Mobile search toggle */}
+        {/* Mobile search toggle
         <button
           onClick={() => setIsSearchOpen(!isSearchOpen)}
           className="rounded-full p-2 transition hover:bg-slate-100 md:hidden"
           aria-label="Toggle search"
         >
           <Search className="h-5 w-5 text-slate-600" />
-        </button>
+        </button> */}
 
         <button className="relative rounded-full p-2 transition hover:bg-slate-100">
           <Bell className="h-5 w-5 text-slate-600" />

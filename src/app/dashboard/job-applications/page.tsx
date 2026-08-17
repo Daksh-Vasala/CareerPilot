@@ -68,10 +68,10 @@ export default async function JobApplicationsPage() {
 
         <section aria-label="Overview" className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           <Stat label="Total Applications" value={total} tone="text-slate-900" />
-          <Stat label="Applied" value={count("Applied")} tone="text-indigo-600" />
-          <Stat label="Interviewing" value={count("Interviewing")} tone="text-emerald-600" />
-          <Stat label="Offers" value={count("Offer")} tone="text-teal-600" />
-          <Stat label="Rejected" value={count("Rejected")} tone="text-rose-600" />
+          <Stat label="Applied" value={count("APPLIED")} tone="text-indigo-600" />
+          <Stat label="Interviewing" value={count("INTERVIEW")} tone="text-emerald-600" />
+          <Stat label="Offers" value={count("OFFER")} tone="text-teal-600" />
+          <Stat label="Rejected" value={count("REJECTED")} tone="text-rose-600" />
         </section>
 
         <section className="mt-6">

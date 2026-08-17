@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState, useCallback } from "react";
-import { Search, ChevronDown, Building2, Inbox } from "lucide-react";
+import { Search, ChevronDown, Building2, Inbox, Loader } from "lucide-react";
+import { toast } from "sonner";
 import {
   statusStyles,
   type Application,
@@ -13,10 +14,10 @@ import ActionMenu from "./ActionMenu";
 
 const STATUSES: (ApplicationStatus | "All")[] = [
   "All",
-  "Applied",
-  "Interviewing",
-  "Offer",
-  "Rejected",
+  "APPLIED",
+  "INTERVIEW",
+  "OFFER",
+  "REJECTED",
 ];
 
 const SORTS = ["Most Recent", "Oldest", "Company A–Z"] as const;
@@ -102,6 +103,12 @@ export default function ApplicationsClient({
   const handleSaveApplication = useCallback(
     async (data: ApplicationFormData) => {
       setIsLoading(true);
+      const toastId = toast.loading(
+        selectedApplication
+          ? "Updating application..."
+          : "Adding application...",
+      );
+
       try {
         if (selectedApplication) {
           // Update existing application
@@ -124,15 +131,19 @@ export default function ApplicationsClient({
               app.id === selectedApplication.id
                 ? {
                     ...app,
-                    company: data.companyName,
-                    position: data.jobTitle,
+                    companyName: data.companyName,
+                    jobTitle: data.jobTitle,
                     location: data.location || app.location,
                     status: (data.status as ApplicationStatus) || app.status,
-                    appliedDate: data.appliedAt || app.appliedAt,
+                    appliedAt: data.appliedAt || app.appliedAt,
                   }
                 : app,
             ),
           );
+
+          toast.success("Application updated successfully", { id: toastId });
+          handleCloseModal();
+
         } else {
           // Create new application
           const response = await fetch("/api/job-applications", {
@@ -160,22 +171,65 @@ export default function ApplicationsClient({
             };
             setApplications((prev) => [newApp, ...prev]);
           }
+
+          toast.success("Application added successfully", { id: toastId });
         }
       } catch (error) {
-        throw error;
+        toast.error(
+          error instanceof Error ? error.message : "Failed to save application",
+          { id: toastId },
+        );
       } finally {
         setIsLoading(false);
       }
     },
-    [selectedApplication],
+    [handleCloseModal, selectedApplication],
   );
 
   const handleDeleteApplication = useCallback(async (appId: string) => {
-    if (!confirm("Are you sure you want to delete this application?")) {
+    const confirmed = await new Promise<boolean>((resolve) => {
+      const toastId = toast.custom(
+        () => (
+          <div className="flex gap-3 rounded-lg bg-white p-4 shadow-lg">
+            <div className="flex-1">
+              <p className="font-medium text-slate-900">Delete Application?</p>
+              <p className="mt-1 text-sm text-slate-600">
+                This action cannot be undone.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  resolve(false);
+                  toast.dismiss(toastId);
+                }}
+                className="rounded px-3 py-1 text-sm text-slate-700 hover:bg-slate-100"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  resolve(true);
+                  toast.dismiss(toastId);
+                }}
+                className="rounded bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ),
+        { duration: Infinity },
+      );
+    });
+
+    if (!confirmed) {
       return;
     }
 
     setDeletingId(appId);
+    const toastId = toast.loading("Deleting application...");
+
     try {
       const response = await fetch(`/api/job-applications/${appId}`, {
         method: "DELETE",
@@ -187,9 +241,11 @@ export default function ApplicationsClient({
 
       // Remove from local state
       setApplications((prev) => prev.filter((app) => app.id !== appId));
+      toast.success("Application deleted successfully", { id: toastId });
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error ? error.message : "Failed to delete application",
+        { id: toastId },
       );
     } finally {
       setDeletingId(null);
@@ -207,7 +263,8 @@ export default function ApplicationsClient({
     );
 
     return [...filtered].sort((a, b) => {
-      if (sort === "Company A–Z") return a.companyName.localeCompare(b.companyName);
+      if (sort === "Company A–Z")
+        return a.companyName.localeCompare(b.companyName);
       const diff = +new Date(b.appliedAt) - +new Date(a.appliedAt);
       return sort === "Most Recent" ? diff : -diff;
     });
@@ -247,22 +304,30 @@ export default function ApplicationsClient({
             </div>
             <button
               onClick={() => handleOpenModal()}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:col-span-1"
+              disabled={isLoading}
+              className="flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700 disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:col-span-1"
             >
-              Add Application
+              {isLoading ? (
+                <>
+                  <Loader className="size-4 animate-spin" />
+                  <span>Processing...</span>
+                </>
+              ) : (
+                "Add Application"
+              )}
             </button>
           </div>
         </div>
       </div>
 
       {/* Table */}
-      <div className="mt-5 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      <div className="mt-5 rounded-xl border border-slate-200 bg-white shadow-sm">
         <div className="hidden grid-cols-[1.3fr_1.4fr_1.2fr_0.9fr_0.9fr_56px] gap-4 border-b border-slate-200 bg-slate-50/70 px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 md:grid">
           <span>Company</span>
           <span>Position</span>
           <span>Location</span>
           <span>Status</span>
-          <span>Applied Date</span>
+          <span>APPLIED Date</span>
           <span className="text-right">Actions</span>
         </div>
 

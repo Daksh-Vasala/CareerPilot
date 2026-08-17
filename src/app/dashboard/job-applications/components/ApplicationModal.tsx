@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { X, Loader } from "lucide-react";
 import { ApplicationStatus } from "@/generated/prisma/enums";
 import { Application } from "./types";
-import { api } from "@/lib/api";
 
 interface ApplicationModalProps {
   isOpen: boolean;
@@ -35,8 +34,6 @@ const STATUSES: ApplicationStatus[] = [
   ApplicationStatus.REJECTED,
 ];
 
-
-
 export default function ApplicationModal({
   isOpen,
   onClose,
@@ -45,13 +42,11 @@ export default function ApplicationModal({
   isLoading = false,
 }: ApplicationModalProps) {
   const [formData, setFormData] = useState<ApplicationFormData>({
-    companyName: application?.companyName || "",
-    jobTitle: application?.jobTitle || "",
-    location: application?.location || "",
-    status: application?.status as ApplicationStatus | undefined,
-    appliedAt: application?.appliedAt
-      ? application.appliedAt.split("T")[0]
-      : new Date().toISOString().split("T")[0],
+    companyName: "",
+    jobTitle: "",
+    location: "",
+    status: ApplicationStatus.APPLIED,
+    appliedAt: new Date().toISOString().split("T")[0],
     jobUrl: "",
     jobType: "",
     salary: "",
@@ -61,6 +56,45 @@ export default function ApplicationModal({
   });
 
   const [error, setError] = useState<string>("");
+
+  // Update form data when application changes (for editing)
+  useEffect(() => {
+    if (application) {
+      // Edit mode - pre-fill all details
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFormData({
+        companyName: application.companyName || "",
+        jobTitle: application.jobTitle || "",
+        location: application.location || "",
+        status: application.status as ApplicationStatus,
+        appliedAt: application.appliedAt
+          ? application.appliedAt.split("T")[0]
+          : new Date().toISOString().split("T")[0],
+        jobUrl: application.jobUrl || "",
+        jobType: application.jobType || "",
+        salary: application.salary || "",
+        notes: application.notes || "",
+        recruiterName: application.recruiterName || "",
+        recruiterEmail: application.recruiterEmail || "",
+      });
+    } else {
+      // Add mode - reset to empty
+      setFormData({
+        companyName: "",
+        jobTitle: "",
+        location: "",
+        status: ApplicationStatus.APPLIED,
+        appliedAt: new Date().toISOString().split("T")[0],
+        jobUrl: "",
+        jobType: "",
+        salary: "",
+        notes: "",
+        recruiterName: "",
+        recruiterEmail: "",
+      });
+    }
+    setError("");
+  }, [application, isOpen]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -90,26 +124,7 @@ export default function ApplicationModal({
     }
 
     try {
-      await api("/api/job-applications", 
-        {
-          method: "POST",
-          body: JSON.stringify(formData),
-        }
-      )
-      onClose();
-      setFormData({
-        companyName: "",
-        jobTitle: "",
-        location: "",
-        status: ApplicationStatus.APPLIED,
-        appliedAt: new Date().toISOString().split("T")[0],
-        jobUrl: "",
-        jobType: "",
-        salary: "",
-        notes: "",
-        recruiterName: "",
-        recruiterEmail: "",
-      });
+      await onSubmit(formData);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to save application",
@@ -325,13 +340,18 @@ export default function ApplicationModal({
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              {isLoading
-                ? "Saving..."
-                : application
-                  ? "Update"
-                  : "Add Application"}
+              {isLoading ? (
+                <>
+                  <Loader className="size-4 animate-spin" />
+                  Saving...
+                </>
+              ) : application ? (
+                "Update"
+              ) : (
+                "Add Application"
+              )}
             </button>
           </div>
         </form>

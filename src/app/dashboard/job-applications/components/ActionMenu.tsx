@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MoreHorizontal, Edit2, Trash2 } from "lucide-react";
+import { MoreHorizontal, Edit2, Trash2, Loader } from "lucide-react";
 
 interface ActionMenuProps {
   onEdit: () => void;
@@ -46,7 +46,7 @@ export default function ActionMenu({
 
       {isOpen && (
         <div
-          className="absolute right-0 top-full mt-1 w-40 rounded-lg border border-slate-200 bg-white shadow-lg"
+          className="absolute right-0 top-full z-50 mt-1 w-40 rounded-lg border border-slate-200 bg-white shadow-lg"
           onClick={(e) => e.stopPropagation()}
         >
           <button
@@ -69,8 +69,17 @@ export default function ActionMenu({
             disabled={isDeleting}
             className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-700 transition hover:bg-red-50 disabled:opacity-50"
           >
-            <Trash2 className="size-4" />
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting ? (
+              <>
+                <Loader className="size-4 animate-spin" />
+                Deleting...
+              </>
+            ) : (
+              <>
+                <Trash2 className="size-4" />
+                Delete
+              </>
+            )}
           </button>
         </div>
       )}
