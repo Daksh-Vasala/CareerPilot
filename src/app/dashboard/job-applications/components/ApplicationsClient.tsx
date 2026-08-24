@@ -143,7 +143,6 @@ export default function ApplicationsClient({
 
           toast.success("Application updated successfully", { id: toastId });
           handleCloseModal();
-
         } else {
           // Create new application
           const response = await fetch("/api/job-applications", {
@@ -273,7 +272,7 @@ export default function ApplicationsClient({
   return (
     <>
       {/* Filters */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm sm:p-4">
+      <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
@@ -321,8 +320,21 @@ export default function ApplicationsClient({
       </div>
 
       {/* Table */}
-      <div className="mt-5 rounded-xl border border-slate-200 bg-white shadow-sm">
-        <div className="hidden grid-cols-[1.3fr_1.4fr_1.2fr_0.9fr_0.9fr_56px] gap-4 border-b border-slate-200 bg-slate-50/70 px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 md:grid">
+      <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/70 px-5 py-3">
+          <div>
+            <h2 className="text-sm font-semibold text-slate-900">
+              Your applications
+            </h2>
+            <p className="mt-0.5 text-xs text-slate-500">
+              Keep every opportunity moving forward.
+            </p>
+          </div>
+          <span className="text-xs font-medium tabular-nums text-slate-500">
+            {rows.length} shown
+          </span>
+        </div>
+        <div className="hidden grid-cols-[1.3fr_1.4fr_1.2fr_0.9fr_0.9fr_56px] gap-4 border-b border-slate-200 bg-slate-50/40 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 md:grid">
           <span>Company</span>
           <span>Position</span>
           <span>Location</span>

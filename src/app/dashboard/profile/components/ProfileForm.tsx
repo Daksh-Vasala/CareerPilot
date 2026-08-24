@@ -1,12 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import {
-  User,
-  GraduationCap,
-  Link2,
-  ChevronDown,
-} from "lucide-react";
+import { User, GraduationCap, Link2, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import type { ProfileFormData } from "@/types/profile.types";
 import ProfileSidebar from "./ProfileSidebar";
@@ -66,7 +61,7 @@ export default function ProfileForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="grid grid-cols-1 gap-6 lg:grid-cols-[300px_1fr]"
+      className="grid grid-cols-1 gap-4 lg:grid-cols-[300px_1fr]"
     >
       {/* Left card – exact same as original */}
       <ProfileSidebar initialProfile={initialProfile} />
@@ -74,7 +69,7 @@ export default function ProfileForm({
       {/* Right column – untouched */}
       <div className="space-y-6">
         {/* Personal Info */}
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="mb-5 flex items-center gap-2">
             <User className="h-5 w-5 text-indigo-600" />
             <h3 className="text-base font-semibold">Personal Information</h3>
@@ -110,7 +105,7 @@ export default function ProfileForm({
         </section>
 
         {/* Education */}
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="mb-5 flex items-center gap-2">
             <GraduationCap className="h-5 w-5 text-indigo-600" />
             <h3 className="text-base font-semibold">Education</h3>
@@ -144,7 +139,7 @@ export default function ProfileForm({
         </section>
 
         {/* Professional Links */}
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="mb-5 flex items-center gap-2">
             <Link2 className="h-5 w-5 text-indigo-600" />
             <h3 className="text-base font-semibold">Professional Links</h3>

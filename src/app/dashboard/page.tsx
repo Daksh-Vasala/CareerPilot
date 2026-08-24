@@ -31,16 +31,18 @@ export default async function DashboardPage() {
   const resume = await getResume(session?.user.id || "");
 
   return (
-    <div className="mx-auto max-w-8xl space-y-6 px-4 py-4 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-8xl space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
-            Good Morning, Daksh 👋
-          </h1>
-          <p className="text-sm text-gray-500 mt-0.5">
-            You&apos;re making great progress. Keep building your career.
-          </p>
+        <div className="flex items-start gap-3">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Good Morning, Daksh 👋
+            </h1>
+            <p className="mt-0.5 text-sm text-gray-500">
+              You&apos;re making great progress. Keep building your career.
+            </p>
+          </div>
         </div>
         <ProfileCompletion percentage={profilePct} />
       </div>

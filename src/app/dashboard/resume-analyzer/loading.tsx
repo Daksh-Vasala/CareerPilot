@@ -13,7 +13,7 @@ export default function ResumeAnalyzerLoading() {
 
       <div className="grid grid-cols-1 gap-8 xl:grid-cols-12">
         <div className="xl:col-span-4">
-          <div className="h-[320px] rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="h-80 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <div className="mx-auto h-48 w-48 rounded-full bg-slate-200" />
             <div className="mt-6 h-6 w-28 rounded bg-slate-200 mx-auto" />
             <div className="mt-3 h-4 w-40 rounded bg-slate-200 mx-auto" />
