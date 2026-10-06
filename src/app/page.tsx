@@ -11,7 +11,6 @@ import {
   ScanText,
   KanbanSquare,
   CalendarDays,
-  Compass,
   Lightbulb,
   Brain,
   Sparkles,
@@ -40,11 +39,6 @@ const features = [
     title: "Interview Tracker",
     body: "Log notes, track rounds, and prepare with AI-generated questions tailored to the role.",
   },
-  {
-    icon: Compass,
-    title: "AI Career Roadmap",
-    body: "Get personalized recommendations for skills to learn and roles to target based on your profile.",
-  },
 ];
 
 const steps = [
@@ -68,7 +62,7 @@ const steps = [
 const footerCols = [
   {
     title: "Product",
-    links: ["Resume Analyzer", "Job Applications", "Interview Tracker", "AI Roadmap"],
+    links: ["Resume Analyzer", "Job Applications", "Interview Tracker"],
   },
 ];
 
@@ -177,7 +171,7 @@ export default function CareerPilotLanding() {
 
             <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
               Your personal career operating system. Analyze your resume against job descriptions,
-              track applications automatically, and get AI-driven roadmaps to your next role.
+              track applications automatically, and stay organized through every step of your job search.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">

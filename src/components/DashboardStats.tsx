@@ -1,4 +1,4 @@
-import { Briefcase, FileText, Calendar, Target, TrendingUp } from "lucide-react";
+import { Briefcase, FileText, Calendar, TrendingUp } from "lucide-react";
 import type { Stats } from "@/services/client/dashboard.service";
 
 const colorMap = {
@@ -9,7 +9,7 @@ const colorMap = {
 } as const;
 
 type StatItem = {
-  icon: JSX.Element;
+  icon: React.ReactElement;
   label: string;
   value: string | number;
   badge: string;
@@ -43,18 +43,10 @@ export default function DashboardStats({ stats }: { stats: Stats }) {
       color: "purple",
       bg: "bg-purple-50",
     },
-    {
-      icon: <Target className="w-5 h-5 text-amber-600" />,
-      label: "Roadmap Progress",
-      value: `${stats.roadmapProgress}%`,
-      badge: "On track",
-      color: "amber",
-      bg: "bg-amber-50",
-    },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
       {statData.map((s, i) => (
         <div
           key={i}

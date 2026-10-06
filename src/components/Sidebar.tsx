@@ -9,7 +9,6 @@ import {
   FileText,
   Briefcase,
   ClipboardList,
-  Map,
   Settings,
   LogOut,
   Menu,
@@ -35,7 +34,6 @@ const navItems = [
     href: "/dashboard/interview-tracker",
     icon: ClipboardList,
   },
-  { label: "AI Roadmap", href: "/dashboard/ai-roadmap", icon: Map },
 ];
 
 export default function Sidebar() {

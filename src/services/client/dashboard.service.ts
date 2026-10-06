@@ -17,7 +17,6 @@ export type Stats = {
   applications: number;
   resumeScore: number;
   interviews: number;
-  roadmapProgress: number;
 };
 export type Resume = {
   fileName: string;
@@ -59,7 +58,6 @@ export async function getStats(): Promise<Stats> {
     applications: 24,
     resumeScore: 92,
     interviews: 3,
-    roadmapProgress: 65,
   };
 }
 

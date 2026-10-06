@@ -1,4 +1,4 @@
-import { FileText, Plus, Rocket } from "lucide-react";
+import { FileText, Plus } from "lucide-react";
 
 function ActionBtn({ children, icon, primary }: any) {
   const base =
@@ -21,9 +21,6 @@ export default function ActionButtons() {
       </ActionBtn>
       <ActionBtn icon={<Plus className="w-4 h-4" />}>
         Add Job Application
-      </ActionBtn>
-      <ActionBtn icon={<Rocket className="w-4 h-4" />}>
-        Generate AI Roadmap
       </ActionBtn>
     </div>
   );
